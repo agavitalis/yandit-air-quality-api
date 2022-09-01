@@ -22,7 +22,7 @@ class AirQualityRepository implements IBaseRepository {
 
   async getAirQualityUpdateInParis(): Promise<any> {
     const airQuality = await AirQuality.find().sort({"aqius":-1, "aqicn":-1}).limit(1) 
-    return airQuality;
+    return airQuality[0];
   }
 
   async createAirQuality(airQualityDto: AirQualityDto): Promise<void> {

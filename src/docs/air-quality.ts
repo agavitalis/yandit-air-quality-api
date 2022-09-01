@@ -29,25 +29,15 @@ const internalServerError = {
         type: 'object',
         properties: {
           message: {
-            type: 'string',
-            example: 'Internal Server Error',
-          },
-        },
-      },
-    },
-  },
-};
-
-const notFoundError = {
-  description: 'Resource not found',
-  content: {
-    'application/json': {
-      schema: {
-        type: 'object',
-        properties: {
-          message: {
-            type: 'string',
-            example: 'AirQuality with id: "71675fcb655047cdc4955929" not found',
+            type: 'array',
+            example: {
+              errors: [
+                {
+                  "message": "Error Message",
+                  "field": "input field name (optional)"
+                }
+              ]
+            },
           },
         },
       },
@@ -60,15 +50,17 @@ const validationError = {
   content: {
     'application/json': {
       schema: {
-        type: 'array',
+        type: 'object',
         properties: {
-          message: {
-            type: 'string',
-            example: 'The fields name and description are required',
-          },
-          field: {
+          errors: {
             type: 'array',
-            example: 'The fields name and description are required',
+            example:
+              [
+                {
+                  "message": "Error Message",
+                  "field": "input field name (optional)"
+                }
+              ]
           },
         },
       },
@@ -80,24 +72,7 @@ const getAirQualityByLocation = {
   tags: ['Air Quality By Location'],
   description: 'Air Quality By Location',
   operationId: 'getAirQualitys',
-  parameters: [
-    {
-      name: 'latitude',
-      in: 'path',
-      description: 'latitude',
-      required: 'true',
-      type: 'string',
-      example: '66.3433',
-    },
-    {
-      name: 'longitude',
-      in: 'path',
-      description: 'longitude',
-      required: 'true',
-      type: 'string',
-      example: '66.3433',
-    },
-  ],
+
   responses: {
     '200': {
       description: 'Air Quality By Location retrieved successfully!',
@@ -110,6 +85,7 @@ const getAirQualityByLocation = {
         },
       },
     },
+    '400': validationError,
     '500': internalServerError,
   },
 };
@@ -131,7 +107,6 @@ const getAirQualityUpdateInParis = {
       },
     },
     '400': validationError,
-    '404': notFoundError,
     '500': internalServerError,
   },
 };
